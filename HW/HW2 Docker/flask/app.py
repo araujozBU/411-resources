@@ -35,8 +35,21 @@ def sysCheck():
     )
     return response
 
+@app.route('/hang')
+def hang():
+    while True:
+        continue
+
+    response = make_response(
+        {
+            "body": "OK",
+            "status": 200
+        }
+    )
+    return response
+
 if __name__ == '__main__':
     # By default flask is only accessible from localhost.
     # Set this to '0.0.0.0' to make it accessible from any IP address
     # on your network (not recommended for production use)
-    app.run(host='0.0.0.0', debug=True, port = int(os.getenv("PORT")))
+    app.run(host='0.0.0.0',threaded=False, debug=True, port = int(os.getenv("PORT")))
