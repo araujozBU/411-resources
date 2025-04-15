@@ -142,7 +142,7 @@ class Boxers(db.Model):
             ValueError: If the boxer with the given ID does not exist.
 
         """
-        boxer = cls.query.get(boxer_id)
+        boxer = db.session.get(cls, boxer_id)
         if boxer is None:
             logger.info(f"Boxer with ID {boxer_id} not found.")
             raise ValueError(f"Boxer with ID {boxer_id} not found.")
