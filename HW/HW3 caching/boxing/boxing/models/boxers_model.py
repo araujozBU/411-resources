@@ -93,6 +93,8 @@ class Boxers(db.Model):
             weight_class = 'FEATHERWEIGHT'
         else:
             raise ValueError(f"Invalid weight: {weight}. Weight must be at least 125.")
+        
+        return weight_class
 
     @classmethod
     def create_boxer(cls, name: str, weight: float, height: float, reach: float, age: int) -> None:
