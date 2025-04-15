@@ -4,7 +4,7 @@ services:
     build: ./service
     # image: chopsticks_flask-app
     ports:
-      - "5000:5000"
+      - "5001:5001"
     environment:
       - FLASK_DEBUG=1
 
@@ -12,7 +12,7 @@ services:
     build:
       context: ./client
       args:
-        REACT_APP_FLASK_API: http://${FLOATING_IP}:5000/tictactoe
+        REACT_APP_FLASK_API: http://${FLOATING_IP}:5001/tictactoe
     # image: decoupled_react-app
     ports:
       - "3000:3000"
