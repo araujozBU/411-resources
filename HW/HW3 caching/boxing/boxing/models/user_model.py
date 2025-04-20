@@ -13,7 +13,13 @@ logger = logging.getLogger(__name__)
 configure_logger(logger)
 
 
-class Users():
+class Users(db.Model, UserMixin):
+    __tablename__ = 'users'
+
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    salt = db.Column(db.String(32), nullable=False)  # 16-byte salt in hex
+    password = db.Column(db.String(64), nullable=False)  # SHA-256 hash in hex
 
     @staticmethod
     def _generate_hashed_password(password: str) -> tuple[str, str]:
