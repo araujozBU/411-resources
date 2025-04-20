@@ -78,10 +78,12 @@ class Users(db.Model, UserMixin):
         Raises:
             ValueError: If the user does not exist.
         """
-
+        user = cls.query.filter_by(username=username).first()
         if not user:
+            logger.info("User %s not found", username)
             raise ValueError(f"User {username} not found")
-        pass
+        hashed_password = hashlib.sha256((password + user.salt).encode()).hexdigest()
+        return hashed_password == user.password
 
     @classmethod
     def delete_user(cls, username: str) -> None:
@@ -94,8 +96,12 @@ class Users(db.Model, UserMixin):
         Raises:
             ValueError: If the user does not exist.
         """
+        user = cls.query.filter_by(username=username).first()
         if not user:
             logger.info("User %s not found", username)
+            raise ValueError(f"User {username} not found")
+        db.session.delete(user)
+        db.session.commit()
         logger.info("User %s deleted successfully", username)
 
     def get_id(self) -> str:
@@ -105,7 +111,7 @@ class Users(db.Model, UserMixin):
         Returns:
             str: The ID of the user.
         """
-        pass
+        return self.username
 
     @classmethod
     def get_id_by_username(cls, username: str) -> int:
