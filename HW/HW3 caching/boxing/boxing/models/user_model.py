@@ -32,7 +32,9 @@ class Users(db.Model, UserMixin):
         Returns:
             tuple: A tuple containing the salt and hashed password.
         """
-        pass
+        salt = os.urandom(16).hex()
+        hashed_password = hashlib.sha256((password + salt).encode()).hexdigest()
+        return salt, hashed_password
 
     @classmethod
     def create_user(cls, username: str, password: str) -> None:
