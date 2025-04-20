@@ -127,9 +127,11 @@ class Users(db.Model, UserMixin):
         Raises:
             ValueError: If the user does not exist.
         """
+        user = cls.query.filter_by(username=username).first()
         if not user:
+            logger.info("User %s not found", username)
             raise ValueError(f"User {username} not found")
-        pass
+        return user.id
 
     @classmethod
     def update_password(cls, username: str, new_password: str) -> None:
@@ -143,7 +145,14 @@ class Users(db.Model, UserMixin):
         Raises:
             ValueError: If the user does not exist.
         """
+        user = cls.query.filter_by(username=username).first()
+
         if not user:
             logger.info("User %s not found", username)
+            raise ValueError(f"User {username} not found")
 
+        salt, hashed_password = cls._generate_hashed_password(new_password)
+        user.salt = salt
+        user.password = hashed_password
+        db.session.commit()
         logger.info("Password updated successfully for user: %s", username)
