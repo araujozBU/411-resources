@@ -22,8 +22,8 @@ RUN apt-get update && apt-get install -y sqlite3
 # Define a volume for persisting the database
 VOLUME ["/app/db"]
 
-# Make port 5000 available to the world outside this container
-EXPOSE 5000
+# Make port 5001 available to the world outside this container
+EXPOSE 5001
 
 # Run the entrypoint script when the container launches
 CMD ["python", "app.py"]
