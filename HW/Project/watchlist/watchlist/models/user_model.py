@@ -5,8 +5,8 @@ import os
 from flask_login import UserMixin
 from sqlalchemy.exc import IntegrityError
 
-from boxing.db import db
-from boxing.utils.logger import configure_logger
+from watchlist.db import db
+from watchlist.utils.logger import configure_logger
 
 
 logger = logging.getLogger(__name__)
@@ -109,7 +109,7 @@ class Users(db.Model, UserMixin):
         Get the ID of the user.
 
         Returns:
-            str: The ID of the user.
+            int: The ID of the user.
         """
         return self.username
 
@@ -146,7 +146,6 @@ class Users(db.Model, UserMixin):
             ValueError: If the user does not exist.
         """
         user = cls.query.filter_by(username=username).first()
-
         if not user:
             logger.info("User %s not found", username)
             raise ValueError(f"User {username} not found")
